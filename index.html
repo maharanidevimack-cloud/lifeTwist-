@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>lifeTwist - Powered by Shivam Brahman</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ================= SECTION 1: SIDEBAR DRAWER & NAVIGATION ================= -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar-drawer" id="sidebarDrawer">
+        <!-- TOP ACTION BAR: Clean Grok-style (Search Box + Settings + New Chat) -->
+        <div class="sidebar-top-action-bar">
+            <div class="sidebar-search-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="searchChatsInput" placeholder="lifetwist Search...">
+            </div>
+            
+            <button class="sidebar-icon-action-btn" id="sidebarSettingsBtn" title="Settings">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </button>
+            
+            <button class="sidebar-icon-action-btn" id="sidebarNewChatIconBtn" title="New Chat">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            </button>
+        </div>
+
+        <!-- SESSIONS HEADER WITH ALL DROPDOWN FILTER -->
+        <div class="sessions-header-row">
+            <span class="sessions-title">Sessions</span>
+            <div class="sessions-filter-dropdown-wrapper">
+                <button class="sessions-filter-btn" id="sessionsFilterBtn" onclick="toggleSessionsDropdown()">
+                    <span id="currentFilterLabel">All</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="sessions-filter-menu" id="sessionsFilterMenu">
+                    <button class="filter-option-item active" onclick="selectSessionFilter('All', this)">All</button>
+                    <button class="filter-option-item" onclick="selectSessionFilter('Chat', this)">Chat</button>
+                    <button class="filter-option-item" onclick="selectSessionFilter('Research', this)">Research</button>
+                    <button class="filter-option-item" onclick="selectSessionFilter('Studio', this)">Studio</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-sessions-list" id="chatSessionsList"></div>
+    </div>
+
+    <!-- ================= SECTION 2: MAIN CHAT INTERFACE ================= -->
+    <div class="aura-container" id="auraContainer">
+        <div class="aura-header">
+            <div class="header-left">
+                <button class="menu-btn" id="menuBtn" title="Menu">
+                    <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                </button>
+            </div>
+            
+            <!-- GLOBAL 3-TAB HEADER NAVIGATION -->
+            <div class="header-tabs-nav">
+                <button class="header-tab-btn active" id="tabChatBtn" onclick="switchHeaderMode('chat')">Chat</button>
+                <button class="header-tab-btn" id="tabResearchBtn" onclick="switchHeaderMode('research')">Research</button>
+                <button class="header-tab-btn" id="tabStudioBtn" onclick="switchHeaderMode('studio')">Studio</button>
+            </div>
+
+            <div class="header-right">
+                <button class="private-btn" id="privateBtn" title="Toggle Private Chat">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 2a4 4 0 0 0-4 4v2h8V6a4 4 0 0 0-4-4z"/>
+                        <circle cx="9" cy="15" r="2.5"/>
+                        <circle cx="15" cy="15" r="2.5"/>
+                        <path d="M11.5 15h1"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- WIKIPEDIA HOME FEED TRIGGER BUTTON BAR -->
+        <div class="home-nav-bar" style="padding: 10px 16px; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: center;">
+            <button class="home-feed-trigger-btn" id="homeFeedBtn" onclick="toggleHomeFeed()" style="display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s ease;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                Wikipedia Home Feed
+            </button>
+        </div>
+
+        <!-- REFINED SINGLE CLEAN DOUBLE-STAR LOGO ORB -->
+        <div class="orb-container" id="orbSection">
+            <div class="brand-logo-wrapper">
+                <svg class="star-logo-svg" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                    <path d="M50 10 L61 34 L88 37 L68 55 L73 82 L50 68 L27 82 L32 55 L12 37 L39 34 Z" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M58 18 L67 38 L90 41 L73 57 L78 80 L58 67" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- WIKIPEDIA LIVE HOME FEED CONTAINER -->
+        <div id="homeFeedContainer" class="home-feed-container" style="display: none; padding: 16px; overflow-y: auto; flex: 1; background: #0b0b0e;">
+            <div class="home-feed-header" style="margin-bottom: 16px; text-align: center;">
+                <h2 style="font-size: 18px; color: #fff; margin-bottom: 4px;">Trending & Top Knowledge</h2>
+                <p style="font-size: 12px; color: #888;">Powered by Wikipedia Ecosystem (Live & Free)</p>
+            </div>
+            <div id="wikiArticlesCardsList" class="wiki-cards-grid" style="display: flex; flex-direction: column; gap: 12px;">
+                <!-- Live Wikipedia articles with dual buttons will inject here dynamically -->
+            </div>
+        </div>
+
+        <div id="chatStream" class="chat-stream"></div>
+
+        <!-- ================= SECTION 3: INPUT & SEARCH BAR ================= -->
+        <div class="input-bar-container">
+            <div class="glass-search-box">
+                <!-- PLUS BUTTON -->
+                <button class="attach-btn" id="attachBtn" title="Add Attachments">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+
+                <textarea id="userInput" rows="1" placeholder="Ask LifeTwist anything..."></textarea>
+                
+                <button class="send-btn" id="sendBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </div>
+
+            <!-- PLUS BUTTON POPUP MENU -->
+            <div class="attach-popup-menu" id="attachPopupMenu">
+                <button class="attach-menu-item" onclick="handleAttachOption('Camera')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                    Camera
+                </button>
+                <button class="attach-menu-item" onclick="handleAttachOption('Photos')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    Photos / Gallery
+                </button>
+                <button class="attach-menu-item" onclick="handleAttachOption('Files')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                    Files & Documents
+                </button>
+                <button class="attach-menu-item" onclick="handleAttachOption('StudyMode')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    Study Mode (Smart Tutor)
+                </button>
+                <button class="attach-menu-item" onclick="handleAttachOption('Thinking')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
+                    Think Harder (Deep Reasoning)
+                </button>
+            </div>
+        </div>
+    </div>      
+
+    <!-- Hidden File Inputs -->
+    <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
+    <input type="file" id="galleryInput" accept="image/*" style="display: none;">
+    <input type="file" id="fileInput" accept=".pdf,.txt,.doc,.docx,.xls,.xlsx" style="display: none;">
+
+    <!-- Modular Script Files Linking -->
+    <script src="config.js"></script>
+    <script src="storage.js"></script>
+    <script src="app/globals.js"></script>
+    <script src="app/modes.js"></script>
+    <script src="app/filter.js"></script>
+    <script src="app/stream.js"></script>
+    <script src="app/sidebar.js"></script>
+    <script src="app/bubbles.js"></script>
+    <script src="app/handlers.js"></script>
+    <script src="app/events.js"></script>
+    <script src="app/home.js"></script>
+</body>
+                                                                                                                                                                          </html>
+                                                                                                                                                                          
